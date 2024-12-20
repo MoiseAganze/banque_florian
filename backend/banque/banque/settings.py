@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bzr+7dapuzc!z=e2^$l%-vork1o_=#p_s&ax6tt@qc)&e=2nnb'
+SECRET_KEY = 'django-insecure-rm3q1*xfa!4yd%-=10lx+_#5ggqcxu#nm!r0htk+xns*((la60'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,9 +37,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Utilisateur',
     'rest_framework',
+    'User',
 ]
+# je precise le token JWT que j'ai utilisé dans ce projet
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES":[
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ]
+}
+# je veux securiser les mots de passes en passant ces configurations ici
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',  #  PBKDF2, qui est sécurisé 
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+]
+
+# ici je veux indiquer la durée de l'expiration du token 
+from datetime import timedelta
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  #  après 15 minutes
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # rafraîchissement expire après 1 jour, moise essaie d'executer cela chez toi et donne moi les avis
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -123,3 +141,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = "User.User"
