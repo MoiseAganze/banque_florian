@@ -1,5 +1,7 @@
 import requests
 import json
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton,QMessageBox
+
 
 """
 Moise, je n'ai pas pu écrire une documentation des API qui gèrent les utilisateurs mais au moins j'ai constuit un client PYQT5 
@@ -13,8 +15,6 @@ logout_url = "http://127.0.0.1:8000/user/login_user/"
 
 
 je n'ai pas encore gerer la suppression de compte users et je ne pense le faire maintenant
-
-
 
 tu as de questions ? faites-moi signe
 
@@ -49,7 +49,6 @@ class AuthClient:
         print("Déconnexion réussie")
     def get_token(self):
         return self.token
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -67,6 +66,8 @@ class MainWindow(QWidget):
         email = "floriandiangongo22@gmail.com"
         password = "123"
         self.auth_client.authenticate(email, password)
+       
+        
     def logout(self):
         self.auth_client.logout()
 app = QApplication([])
