@@ -473,7 +473,7 @@
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="inimizeBtn">
+              <widget class="QPushButton" name="minimizeBtn">
                <property name="text">
                 <string />
                </property>

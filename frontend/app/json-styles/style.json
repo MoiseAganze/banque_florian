@@ -15,7 +15,7 @@
           "minimize": "minimizeBtn",
           "close": "closeBtn",
           "moveWindow": "header",
-          "titleBar": "header",
+          "tittleBar": "header",
           "restore": [
             {
               "buttonName": "restoreBtn",
