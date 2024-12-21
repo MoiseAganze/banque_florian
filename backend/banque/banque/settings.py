@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'User',
+    'management_banque',
 ]
 # je precise le token JWT que j'ai utilisé dans ce projet
 REST_FRAMEWORK = {
@@ -55,8 +56,8 @@ PASSWORD_HASHERS = [
 # ici je veux indiquer la durée de l'expiration du token 
 from datetime import timedelta
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  #  après 15 minutes
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # rafraîchissement expire après 1 jour, moise essaie d'executer cela chez toi et donne moi les avis
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  
 }
 
 MIDDLEWARE = [
