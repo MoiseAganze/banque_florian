@@ -46,14 +46,13 @@ class AuthClient:
         """Récupère l'ID de l'utilisateur à partir du token JWT"""
         if self.token:
             try:
-                decoded_token = jwt.decode(self.token, options={"verify_signature": False})  # Décodage sans vérification de la signature
-                return decoded_token.get('user_id')  # Récupère l'ID de l'utilisateur dans le token
+                decoded_token = jwt.decode(self.token, options={"verify_signature": False})  # -----------------Décodage sans vérification de la signature-----------------
+                return decoded_token.get('user_id')  # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Récupère l'ID de l'utilisateur dans le token<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
             except jwt.ExpiredSignatureError:
                 return None
         return None
 
 
-# Classe pour le formulaire de création de compte bancaire
 class BankAccountForm(QWidget):
     def __init__(self, auth_client):
         super().__init__()
