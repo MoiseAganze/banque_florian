@@ -5,5 +5,5 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["last_name"]
+    REQUIRED_FIELDS = ["username"]
     pass

@@ -36,11 +36,12 @@ class BankAccount(models.Model):
     civility = models.CharField(max_length=120)
     agency = models.CharField(max_length=120)
     birth_day = models.DateField()
-    nationality = models.CharField(max_length=20, choices=AFRICA_CENTRAL_COUNTRIES, validators=[central_country])
+    nationality = models.CharField(max_length=120)
     zip_code = models.CharField(max_length=10)
     pin_code = models.CharField(max_length=4)
 
     def clean(self):
+        # Logique de validation
         self.pin_code = make_password(self.pin_code)  
         if BankAccount.objects.filter(email=self.email).exists():
             raise ValidationError("Cet email existe déjà")

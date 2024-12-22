@@ -4,30 +4,20 @@ from Custom_Widgets.QAppSettings import QAppSettings
 from Custom_Widgets.QCustomTipOverlay import QCustomTipOverlay
 from Custom_Widgets.QCustomLoadingIndicators import QCustom3CirclesLoader
 from PySide6.QtCore import QSettings,QTimer,Qt,QPoint
-
 class GuiFunction():
     def __init__(self,MainWindow):
         self.main=MainWindow
         self.ui=MainWindow.ui
         self.loadRobotoFonts()
-        #self.initializeAppTheme()
-        # self.ui.searchBtn.clicked.connect(self.showSearchResult)
         self.connectMenubuttons()
-        
-
     def connectMenubuttons(self):
         self.ui.settingsBtn.clicked.connect(lambda: self.ui.centerMenu.expandMenu())
         self.ui.helpBtn.clicked.connect(lambda: self.ui.centerMenu.expandMenu())
-
         self.ui.closeCenterMenuBtn.clicked.connect(lambda: self.ui.centerMenu.collapseMenu())
-
         self.ui.notificationBtn.clicked.connect(lambda: self.ui.rightMenu.expandMenu())
         self.ui.profileBtn.clicked.connect(lambda: self.ui.rightMenu.expandMenu())
-
-        self.ui.closeRightMenuBtn.clicked.connect(lambda: self.ui.rightMenu.collapseMenu())
-        
+        self.ui.closeRightMenuBtn.clicked.connect(lambda: self.ui.rightMenu.collapseMenu()) 
     def createSearchTipOverlay(self):
-        
         self.searchToolTip = QCustomTipOverlay(
             title="Search results.",
             description="Searching...",
@@ -38,8 +28,7 @@ class GuiFunction():
             aniType="pull-up",
             duration=-1,
             tailPosition="top-center",
-            closeIcon=self.main.theme.PATH_RESOURCES+"material_design/close.png", # Add a close icon
-            
+            closeIcon=self.main.theme.PATH_RESOURCES+"material_design/close.png", 
         )
         loader = QCustom3CirclesLoader(
             parent=self.main,
@@ -48,10 +37,6 @@ class GuiFunction():
             animationDuration=400
         )
         self.searchToolTip.addWidget(loader)
-
-
-
-
     def showSearchResult(self):
         searchText=self.ui.searchInput.text()
         if not searchText:
@@ -75,7 +60,7 @@ class GuiFunction():
             if theme.defaultTheme or theme.name==current_theme:
                 self.ui.themeList.setCurrentIndex(theme_count)
     def changeAppTheme(self):
-        
+
         settings=QSettings()
         selected_theme=self.ui.themeList.currentData()
         current_theme=settings.value("THEME")
@@ -87,12 +72,10 @@ class GuiFunction():
         font_id=QFontDatabase.addApplicationFont("./fonts/Roboto/Roboto-Regular.ttf")
         if font_id==-1:
             print("faled to load roboto font")
-        
         font_family=QFontDatabase.applicationFontFamilies(font_id)
         if font_family:
             roboto=QFont(font_family[0])
         else:
             roboto=QFont("Sans Serif")
-        
         self.main.setFont(roboto)
     
