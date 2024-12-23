@@ -58,3 +58,19 @@ class BankAccount(models.Model):
         if any(char.isalpha() for char in self.pin_code):
             raise ValidationError("Le code PIN ne peut pas contenir de lettres !")
         super().clean()
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
