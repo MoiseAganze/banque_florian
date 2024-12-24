@@ -85,7 +85,7 @@ class BankAccountClient(QWidget):
 
         # Requête pour vérifier si le numéro de compte existe
         url = "http://127.0.0.1:8000/FS-Bank/VerifyAccountNumber/"
-        response = requests.post(url, data={'account_number': account_number},headers=headers)
+        response = requests.post(url, json={'account_number': account_number},headers=headers)
 
         if response.status_code == 200:
             # Si le numéro de compte est valide, afficher les champs pour saisir le nouveau code PIN
@@ -112,14 +112,20 @@ class BankAccountClient(QWidget):
 
         # Soumettre la mise à jour du code PIN
         account_number = self.account_input.text()
-        response = requests.post(url, data={'account_number': account_number, 'new_pin': new_pin})
-
+        with open('token.json', 'r') as f:
+            token_data = json.load(f)
+            access_token = token_data.get('access_token') 
+        if access_token:
+            headers = {
+                'Authorization': f'Bearer {access_token}', 
+                'Content-Type': 'application/json' 
+            }
+        response = requests.post(url, json={'account_number': account_number, 'new_pin': new_pin}, headers=headers)
         if response.status_code == 200:
-            self.show_error_message("Code PIN mis à jour avec succès!")
+            self.showNormal("Code PIN mis à jour avec succès!")
             self.close()  # Fermer la fenêtre une fois la mise à jour effectuée
         else:
             self.show_error_message("Erreur lors de la mise à jour du code PIN.")
-
     def show_error_message(self, message):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Critical)

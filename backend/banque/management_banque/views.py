@@ -51,15 +51,16 @@ class VerifyAccountNumber(APIView):
         if not account_number:
             return Response({"detail":"le numero est requis pour cette opération !"})
         try :
-            account = BankAccount.objects.get(user=request.user, account_number=account_number)
-            return Response({"deatil":"numero de compte valide !"}, status=status.HTTP_200_OK)
+            account = BankAccount.objects.get(account_number=account_number)
+            if account_number == account.account_number:
+                return Response({"deatil":"numero de compte valide !"}, status=status.HTTP_200_OK)
         except BankAccount.DoesNotExist:
             return Response({"deatil":"le compte pour ce numero n'a pas été trouvé !"}, status=status.HTTP_400_BAD_REQUEST)
 class ResetCodePin(APIView):
     permission_classes = [IsAuthenticated]
     def post(self,request,*args, **kwargs):
         account_number = request.data.get("account_number")
-        pin = request.data.get("pin")
+        pin = request.data.get("new_pin")
         try:
             account = BankAccount.objects.get(account_number=account_number, user=request.user)
             account.pin_code = pin

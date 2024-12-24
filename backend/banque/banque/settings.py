@@ -56,7 +56,7 @@ PASSWORD_HASHERS = [
 # ici je veux indiquer la durée de l'expiration du token 
 from datetime import timedelta
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  
 }
 
