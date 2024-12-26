@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QStackedWidget
 import re
 import requests
 import json
+from src.utils.write import ecrire_dans_fichier_json
 
 class AuthFunctions:
     def __init__(self, AuthDialog, MainWindow):
@@ -83,17 +84,12 @@ class AuthFunctions:
             return {"success": False, "message": errors[0]}
 
         headers = {"Content-Type": "application/json"}
-        try:
-            self.toggle_loading_button(True, action)
-            result = self.send_post_request(url, data, headers)
-            print(f"{action.capitalize()} réussi :", result)
-        except ValueError as e:
-            print("Erreur avec la réponse ou la requête :", e)
-            return {"success": False, "message": f"Erreur serveur : {e}"}
-        finally:
-            self.toggle_loading_button(False, action)
+            
+        result = self.send_post_request(action,url, data, headers)
+        print(result)
+        ecrire_dans_fichier_json(f"datas/userauth/tokens.json",{"access":result["access_token"],"refresh":result["token_refresh"]})
 
-        return {"success": True, "message": f"{action.capitalize()} ok"}
+        return result
 
     def slide_to_page_connexion(self):
         stacked_widget = self.ui.auth_pages
@@ -116,14 +112,19 @@ class AuthFunctions:
             button.setText("VALIDER")
             button.setDisabled(False)
 
-    def send_post_request(self, url, data, headers=None):
+    def send_post_request(self,action, url, data, headers=None):
         try:
+            self.toggle_loading_button(True, action)
             response = requests.post(url, json=data, headers=headers, timeout=10)
             response.raise_for_status()
-            return response.json()
+            return {**response.json(),"success":True,"message":"ok"}
         except requests.exceptions.RequestException as e:
-            print("Objet de l'erreur (RequestException):", e.response.text if e.response else "Aucune réponse")
-            raise ValueError(f"Erreur lors de la requête : {e}")
+            error_message=self.get_error_message(e.response)
+            return {"success":False,"message":error_message}
         except ValueError as e:
-            print("Objet de l'erreur (ValueError):", e)
-            raise ValueError("La réponse n'est pas au format JSON valide.")
+            return {"success":False,"message":"erreur serveur"}
+        finally:
+            self.toggle_loading_button(False, action)
+    def get_error_message(self,res):
+        data=res.json()
+        return data["non_field_errors"][0]
