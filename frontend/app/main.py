@@ -1,9 +1,11 @@
 import os
 import sys
-from src.ui_test import *
+from src.ui_dashboard import *
+from src.ui_auth import *
 from Custom_Widgets import *
 from Custom_Widgets.QAppSettings import QAppSettings
-from src.Function import GuiFunction
+from src.DashboardFunction import GuiFunction
+from src.AuthFunction import AuthFunctions
 from Custom_Widgets.QCustomQToolTip import QCustomQToolTipFilter
 from PySide6.QtCore import QSettings, QTimer, Qt, QPoint
 
@@ -16,13 +18,13 @@ class MainWindow(QMainWindow):
         ########################################################################
         # APPLY JSON STYLESHEET
         ########################################################################
-        loadJsonStyle(self, self.ui, jsonFiles={"json-styles/style.json"})
+        loadJsonStyle(self, self.ui, jsonFiles={"json-styles/dashboard.json"})
 
         ########################################################################
         # SHOW WINDOW
         ########################################################################
         
-        self.show()
+        #self.show()
         
         ########################################################################
         # UPDATE APP SETTINGS LOADED FROM JSON STYLESHEET
@@ -48,12 +50,25 @@ class MainWindow(QMainWindow):
     #         self._is_moving = False
     #         self.old_pos = None
     #         print("header released")
+class AuthDialog(QDialog):
+    def __init__(self, parent=None,dash=None):
+        QDialog.__init__(self)
+        self.ui = Ui_auth()
+        self.ui.setupUi(self)
+        self.setWindowTitle("Authentification")
+        #self.show()
+        #QAppSettings.updateAppSettings(self)
+        loadJsonStyle(self, self.ui, jsonFiles={"json-styles/auth.json"})
+        self.app_functions = AuthFunctions(self,dash)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app_tooltip_filter = QCustomQToolTipFilter(tailPosition="auto")
     app.installEventFilter(app_tooltip_filter)
-    window = MainWindow()
-    window.show()
+    dash = MainWindow()
+    auth_dialog=AuthDialog(dash=dash)
+    auth_dialog.show()
+    
+    # window.show()
     
     sys.exit(app.exec())
